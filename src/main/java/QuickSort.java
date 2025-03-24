@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.Random;
 
 public class QuickSort<T extends  Comparable<T>> {
     T[] array;
@@ -16,21 +17,37 @@ public class QuickSort<T extends  Comparable<T>> {
         }
     }
 
+    public void quickSortForStatistic(int first, int last, int k) {
+        if (first < last) {
+            int pivotElementIndex = partition(first, last);
+            if(k <= pivotElementIndex) {
+                quickSortForStatistic(first, pivotElementIndex, k);
+            } else {
+                quickSortForStatistic(pivotElementIndex + 1, last, k);
+            }
+        }
+    }
+
     private int partition(int first, int last) {
+//        int pivotElementIndex = (first+last)/2;
+        int pivotElementIndex = first + new Random().nextInt(last-first);
+        swap(pivotElementIndex, last);
+
         T pivotElement = array[last];
         //index that pointing to the last element is less that pivot
         int i = first - 1;
         for(int j = first; j < last; j++) {
             if(array[j].compareTo(pivotElement) <= 0) {
-                i++;
                 if(i != j){
-                    swap(i, j);
+                    swap(++i, j);
                 }
             }
         }
-        swap(i + 1 , last);
+        swap(i+1, last);
         return i + 1;
+//        return i;
     }
+
 
 
     private void swap (int i, int j) {
